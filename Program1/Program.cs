@@ -47,31 +47,33 @@ namespace Program1
             public int defense = InDefense;
             public int heart = InHP;
             public int coin = InCoin;
-            public int itemDamage = 0;
-            public int itemDefense = 0;
+            public Item weapon;
+            public Item shild;
         }
 
         private static void StatUpdate()
         {
             Console.WriteLine("Lv. {0}", player.level);
             Console.WriteLine("Ched ( {0} )", player.ched);
-            if (player.itemDamage != 0)
-                Console.WriteLine("공격력 : {0}({1})", player.damage + player.itemDamage, player.itemDamage);
+            if (player.weapon.value != 0)
+                Console.WriteLine("공격력 : {0}({1})", player.damage + player.weapon.value, player.weapon.value);
             else
                 Console.WriteLine("공격력 : {0}", player.damage);
-            if(player.itemDefense != 0)
-                Console.WriteLine("방어력 : {0}({1})", player.defense + player.itemDefense, player.itemDefense);
+            if(player.shild.value != 0)
+                Console.WriteLine("방어력 : {0}({1})", player.defense + player.shild.value, player.shild.value);
             else
                 Console.WriteLine("방어력 : {0}", player.defense);
             Console.WriteLine("체력 : {0}", player.heart);
             Console.WriteLine("Gold : {0} G", player.coin);
         }
 
-        struct Item(string InName, string InInformation, int InPrice, int InValue, int InKey)
+        struct Item(string InName, string InInformation, int InPrice, int InValue)
         {
             public bool isUse = false;
             public bool isOwner = false;
-            public int Key = InKey;
+
+            public bool isWeapon = false;
+            public bool isShile = false;
 
             public string name = InName;
             public string information = InInformation;
@@ -90,42 +92,42 @@ namespace Program1
                     iteminfo[InItemKey].value = 5;
                     iteminfo[InItemKey].price = 1000;
                     iteminfo[InItemKey].information = "수련에 도움을 주는 갑옷입니다.";
-                    iteminfo[InItemKey].Key = 1;
+                    iteminfo[InItemKey].isShile = true;
                     break;
                 case (int)ItemList.Iron_Armor:
                     iteminfo[InItemKey].name = "무쇠 갑옷";
                     iteminfo[InItemKey].value = 9;
                     iteminfo[InItemKey].price = 2000;
                     iteminfo[InItemKey].information = "무쇠로 만들어져 튼튼한 갑옷입니다.";
-                    iteminfo[InItemKey].Key = 2;
+                    iteminfo[InItemKey].isShile = true;
                     break;
                 case (int)ItemList.Sparta_Armor:
                     iteminfo[InItemKey].name = "스파르타의 갑옷";
                     iteminfo[InItemKey].value = 15;
                     iteminfo[InItemKey].price = 3500;
                     iteminfo[InItemKey].information = "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.";
-                    iteminfo[InItemKey].Key = 3;
+                    iteminfo[InItemKey].isShile = true;
                     break;
                 case (int)ItemList.Old_Sword:
                     iteminfo[InItemKey].name = "낡은 검";
                     iteminfo[InItemKey].value = 2;
                     iteminfo[InItemKey].price = 600;
                     iteminfo[InItemKey].information = "쉽게 볼 수 있는 낡은 검 입니다.";
-                    iteminfo[InItemKey].Key = -1;
+                    iteminfo[InItemKey].isWeapon = true;
                     break;
                 case (int)ItemList.Bronze_Ax:
                     iteminfo[InItemKey].name = "청동 도끼";
                     iteminfo[InItemKey].value = 5;
                     iteminfo[InItemKey].price = 1500;
                     iteminfo[InItemKey].information = "어디선가 사용됐던거 같은 도끼입니다.";
-                    iteminfo[InItemKey].Key = -2;
+                    iteminfo[InItemKey].isWeapon = true;
                     break;
                 case (int)ItemList.Sparta_Spear:
                     iteminfo[InItemKey].name = "스파르타의 창";
                     iteminfo[InItemKey].value = 7;
                     iteminfo[InItemKey].price = 2100;
                     iteminfo[InItemKey].information = "스파르타의 전사들이 사용했다는 전설의 창입니다.";
-                    iteminfo[InItemKey].Key = -3;
+                    iteminfo[InItemKey].isWeapon = true;
                     break;
             }
         }
@@ -211,19 +213,19 @@ namespace Program1
 
                     if (iteminfo[i].isUse)
                     {
-                        if (iteminfo[i].Key > 0)
+                        if (iteminfo[i].isShile)
                             Console.WriteLine("- {0} [E]{1}\t| 방어력 +{2}\t| {3}", ownerNumber, iteminfo[i].name,
                                 iteminfo[i].value, iteminfo[i].information);
-                        else
+                        else if (iteminfo[i].isWeapon)
                             Console.WriteLine("- {0} [E]{1}\t| 공격력 +{2}\t| {3}", ownerNumber, iteminfo[i].name,
                                 iteminfo[i].value, iteminfo[i].information);
                     }
                     else
                     {
-                        if (iteminfo[i].Key > 0)
+                        if (iteminfo[i].isShile)
                             Console.WriteLine("- {0} {1}\t| 방어력 +{2}\t| {3}", ownerNumber, iteminfo[i].name,
                                 iteminfo[i].value, iteminfo[i].information);
-                        else
+                        else if(iteminfo[i].isWeapon)
                             Console.WriteLine("- {0} {1}\t| 공격력 +{2}\t| {3}", ownerNumber, iteminfo[i].name,
                                 iteminfo[i].value, iteminfo[i].information);
                     }
@@ -271,19 +273,19 @@ namespace Program1
 
                     if (iteminfo[i].isUse)
                     {
-                        if (iteminfo[i].Key > 0)
+                        if (iteminfo[i].isShile)
                             Console.WriteLine("- {0} [E]{1}\t| 방어력 +{2}\t| {3}", ownerNumber, iteminfo[i].name,
                                 iteminfo[i].value, iteminfo[i].information);
-                        else
+                        else if(iteminfo[i].isWeapon)
                             Console.WriteLine("- {0} [E]{1}\t| 공격력 +{2}\t| {3}", ownerNumber, iteminfo[i].name,
                                 iteminfo[i].value, iteminfo[i].information);
                     }
                     else
                     {
-                        if (iteminfo[i].Key > 0)
+                        if (iteminfo[i].isShile)
                             Console.WriteLine("- {0} {1}\t| 방어력 +{2}\t| {3}", ownerNumber, iteminfo[i].name,
                                 iteminfo[i].value, iteminfo[i].information);
-                        else
+                        else if(iteminfo[i].isWeapon)
                             Console.WriteLine("- {0} {1}\t| 공격력 +{2}\t| {3}", ownerNumber, iteminfo[i].name,
                                 iteminfo[i].value, iteminfo[i].information);
                     }
@@ -302,13 +304,13 @@ namespace Program1
             {
                 iteminfo[ownerNumberList[choice]].isUse = !iteminfo[ownerNumberList[choice]].isUse;
 
-                if(iteminfo[ownerNumberList[choice]].Key > 0)
+                if(iteminfo[ownerNumberList[choice]].isWeapon)
                 {
-                    player.itemDamage = iteminfo[ownerNumberList[choice]].value;
+                    player.weapon = iteminfo[ownerNumberList[choice]];
                 }
-                else if(iteminfo[ownerNumberList[choice]].Key < 0)
+                else if(iteminfo[ownerNumberList[choice]].isShile)
                 {
-                    player.itemDefense = iteminfo[ownerNumberList[choice]].value;
+                    player.shild = iteminfo[ownerNumberList[choice]];
                 }
 
                 ItemUse();
@@ -343,19 +345,19 @@ namespace Program1
             {
                 if (iteminfo[i].isOwner)
                 {
-                    if (iteminfo[i].Key > 0)
+                    if (iteminfo[i].isShile)
                         Console.WriteLine("- {0}\t| 방어력 +{1}\t| {2}\t| 구매완료", iteminfo[i].name,
                             iteminfo[i].value, iteminfo[i].information);
-                    else
+                    else if(iteminfo[i].isWeapon)
                         Console.WriteLine("- {0}\t| 공격력 +{1}\t| {2}\t| 구매완료", iteminfo[i].name,
                             iteminfo[i].value, iteminfo[i].information);
                 }
                 else
                 {
-                    if (iteminfo[i].Key > 0)
+                    if (iteminfo[i].isShile)
                         Console.WriteLine("- {0}\t| 방어력 +{1}\t| {2}\t| {3} G", iteminfo[i].name,
                             iteminfo[i].value, iteminfo[i].information, iteminfo[i].price);
-                    else
+                    else if(iteminfo[i].isWeapon)
                         Console.WriteLine("- {0}\t| 공격력 +{1}\t| {2}\t| {3} G", iteminfo[i].name,
                             iteminfo[i].value, iteminfo[i].information, iteminfo[i].price);
                 }
@@ -393,19 +395,19 @@ namespace Program1
             {
                 if (iteminfo[i].isOwner)
                 {
-                    if (iteminfo[i].Key > 0)
+                    if (iteminfo[i].isShile)
                         Console.WriteLine("- {0} {1}\t| 방어력 +{2}\t| {3}\t| 구매완료", i, iteminfo[i].name,
                             iteminfo[i].value, iteminfo[i].information);
-                    else
+                    else if(iteminfo[i].isWeapon)
                         Console.WriteLine("- {0} {1}\t| 공격력 +{2}\t| {3}\t| 구매완료", i, iteminfo[i].name,
                             iteminfo[i].value, iteminfo[i].information);
                 }
                 else
                 {
-                    if (iteminfo[i].Key > 0)
+                    if (iteminfo[i].isShile)
                         Console.WriteLine("- {0} {1}\t| 방어력 +{2}\t| {3}\t| {4} G", i, iteminfo[i].name,
                             iteminfo[i].value, iteminfo[i].information, iteminfo[i].price);
-                    else
+                    else if(iteminfo[i].isWeapon)
                         Console.WriteLine("- {0} {1}\t| 공격력 +{2}\t| {3}\t| {4} G", i, iteminfo[i].name,
                             iteminfo[i].value, iteminfo[i].information, iteminfo[i].price);
                 }
