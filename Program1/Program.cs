@@ -302,16 +302,26 @@ namespace Program1
                 Inventory();
             else if (choice <= ownerNumberList.Count)
             {
-                iteminfo[ownerNumberList[choice]].isUse = !iteminfo[ownerNumberList[choice]].isUse;
-
                 if(iteminfo[ownerNumberList[choice]].isWeapon)
                 {
+                    for(int i = 1;  i < iteminfo.Length; i++)
+                    {
+                        if (iteminfo[i].isWeapon)
+                            iteminfo[i].isUse = false;
+                    }
                     player.weapon = iteminfo[ownerNumberList[choice]];
                 }
                 else if(iteminfo[ownerNumberList[choice]].isShile)
                 {
+                    for (int i = 1; i < iteminfo.Length; i++)
+                    {
+                        if (iteminfo[i].isShile)
+                            iteminfo[i].isUse = false;
+                    }
                     player.shild = iteminfo[ownerNumberList[choice]];
                 }
+
+                iteminfo[ownerNumberList[choice]].isUse = !iteminfo[ownerNumberList[choice]].isUse;
 
                 ItemUse();
             }
