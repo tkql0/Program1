@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using System.Diagnostics;
 using System.Numerics;
 using System.Xml.Linq;
 
@@ -12,6 +13,7 @@ namespace Program1
         Old_Sword,
         Bronze_Ax,
         Sparta_Spear,
+        Sparta_Helmet,
     }
 
     internal class Program
@@ -21,6 +23,8 @@ namespace Program1
         static Player player;
         static Item item;
 
+        static Item[] iteminfo = new Item[(int)ItemList.Sparta_Helmet + 1];
+
         private static void Main(string[] args)
         {
             Console.WriteLine("직업을 고르세요.");
@@ -29,7 +33,7 @@ namespace Program1
 
             Console.WriteLine("어디선가 스파르타의 기운이 느껴집니다...");
 
-            player = new Player(1, "전사", 10, 5, 100, 4000);
+            player = new Player(1, "전사", 10, 5, 100, 6000);
 
             Thread.Sleep(500);
 
@@ -81,8 +85,6 @@ namespace Program1
             public int value = InValue;
         }
 
-        static Item[] iteminfo = new Item[(int)ItemList.Sparta_Spear + 1];
-
         private static void ItemIndex(int InItemKey)
         {
             switch (InItemKey)
@@ -128,6 +130,13 @@ namespace Program1
                     iteminfo[InItemKey].price = 2100;
                     iteminfo[InItemKey].information = "스파르타의 전사들이 사용했다는 전설의 창입니다.";
                     iteminfo[InItemKey].isWeapon = true;
+                    break;
+                case (int)ItemList.Sparta_Helmet:
+                    iteminfo[InItemKey].name = "스파르타의 투구";
+                    iteminfo[InItemKey].value = 10;
+                    iteminfo[InItemKey].price = 2500;
+                    iteminfo[InItemKey].information = "스파르타의 전사들이 사용했다는 전설의 투구입니다.";
+                    iteminfo[InItemKey].isShile = true;
                     break;
             }
         }
@@ -260,7 +269,7 @@ namespace Program1
 
             Console.WriteLine("[아이템 목록]");
 
-            int ownerNumber = 0;
+            int ownerNumber = 1;
             List<int> ownerNumberList = new List<int>();
             ownerNumberList.Add(0);
 
@@ -269,7 +278,6 @@ namespace Program1
                 if (iteminfo[i].isOwner)
                 {
                     ownerNumberList.Add(i);
-                    ownerNumber++;
 
                     if (iteminfo[i].isUse)
                     {
@@ -279,6 +287,7 @@ namespace Program1
                         else if(iteminfo[i].isWeapon)
                             Console.WriteLine("- {0} [E]{1}\t| 공격력 +{2}\t| {3}", ownerNumber, iteminfo[i].name,
                                 iteminfo[i].value, iteminfo[i].information);
+
                     }
                     else
                     {
@@ -289,6 +298,8 @@ namespace Program1
                             Console.WriteLine("- {0} {1}\t| 공격력 +{2}\t| {3}", ownerNumber, iteminfo[i].name,
                                 iteminfo[i].value, iteminfo[i].information);
                     }
+
+                    ownerNumber++;
                 }
             }
 
@@ -361,6 +372,7 @@ namespace Program1
                     else if(iteminfo[i].isWeapon)
                         Console.WriteLine("- {0}\t| 공격력 +{1}\t| {2}\t| 구매완료", iteminfo[i].name,
                             iteminfo[i].value, iteminfo[i].information);
+
                 }
                 else
                 {
@@ -427,35 +439,18 @@ namespace Program1
 
             int choice = ChoiceNumber();
 
-            switch (choice)
+            if (choice == 0)
+                Store();
+            else if (choice <= iteminfo.Length)
             {
-                case 0:
-                    Store();
-                    break;
-                case 1:
-                    ItemBuy(1);
-                    break;
-                case 2:
-                    ItemBuy(2);
-                    break;
-                case 3:
-                    ItemBuy(3);
-                    break;
-                case 4:
-                    ItemBuy(4);
-                    break;
-                case 5:
-                    ItemBuy(5);
-                    break;
-                case 6:
-                    ItemBuy(6);
-                    break;
-                default:
-                    Console.WriteLine("잘못된 입력입니다. 잠시만 기다리세요.");
+                ItemBuy(choice);
+            }
+            else
+            {
+                Console.WriteLine("잘못된 입력입니다. 잠시만 기다리세요.");
 
-                    Thread.Sleep(500);
-                    Store();
-                    break;
+                Thread.Sleep(500);
+                Store();
             }
         }
 
