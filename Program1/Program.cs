@@ -51,94 +51,8 @@ namespace Program1
             public int defense = InDefense;
             public int heart = InHP;
             public int coin = InCoin;
-            public Item weapon;
-            public Item shild;
-        }
-
-        private static void StatUpdate()
-        {
-            Console.WriteLine("Lv. {0}", player.level);
-            Console.WriteLine("Ched ( {0} )", player.ched);
-            if (player.weapon.value != 0)
-                Console.WriteLine("공격력 : {0}({1})", player.damage + player.weapon.value, player.weapon.value);
-            else
-                Console.WriteLine("공격력 : {0}", player.damage);
-            if(player.shild.value != 0)
-                Console.WriteLine("방어력 : {0}({1})", player.defense + player.shild.value, player.shild.value);
-            else
-                Console.WriteLine("방어력 : {0}", player.defense);
-            Console.WriteLine("체력 : {0}", player.heart);
-            Console.WriteLine("Gold : {0} G", player.coin);
-        }
-
-        struct Item(string InName, string InInformation, int InPrice, int InValue)
-        {
-            public bool isUse = false;
-            public bool isOwner = false;
-
-            public bool isWeapon = false;
-            public bool isShile = false;
-
-            public string name = InName;
-            public string information = InInformation;
-            public int price = InPrice;
-            public int value = InValue;
-        }
-
-        private static void ItemIndex(int InItemKey)
-        {
-            switch (InItemKey)
-            {
-                case (int)ItemList.Trainee_Armor:
-                    iteminfo[InItemKey].name = "수련자의 갑옷";
-                    iteminfo[InItemKey].value = 5;
-                    iteminfo[InItemKey].price = 1000;
-                    iteminfo[InItemKey].information = "수련에 도움을 주는 갑옷입니다.";
-                    iteminfo[InItemKey].isShile = true;
-                    break;
-                case (int)ItemList.Iron_Armor:
-                    iteminfo[InItemKey].name = "무쇠 갑옷";
-                    iteminfo[InItemKey].value = 9;
-                    iteminfo[InItemKey].price = 2000;
-                    iteminfo[InItemKey].information = "무쇠로 만들어져 튼튼한 갑옷입니다.";
-                    iteminfo[InItemKey].isShile = true;
-                    break;
-                case (int)ItemList.Sparta_Armor:
-                    iteminfo[InItemKey].name = "스파르타의 갑옷";
-                    iteminfo[InItemKey].value = 15;
-                    iteminfo[InItemKey].price = 3500;
-                    iteminfo[InItemKey].information = "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.";
-                    iteminfo[InItemKey].isShile = true;
-                    break;
-                case (int)ItemList.Old_Sword:
-                    iteminfo[InItemKey].name = "낡은 검";
-                    iteminfo[InItemKey].value = 2;
-                    iteminfo[InItemKey].price = 600;
-                    iteminfo[InItemKey].information = "쉽게 볼 수 있는 낡은 검 입니다.";
-                    iteminfo[InItemKey].isWeapon = true;
-                    break;
-                case (int)ItemList.Bronze_Ax:
-                    iteminfo[InItemKey].name = "청동 도끼";
-                    iteminfo[InItemKey].value = 5;
-                    iteminfo[InItemKey].price = 1500;
-                    iteminfo[InItemKey].information = "어디선가 사용됐던거 같은 도끼입니다.";
-                    iteminfo[InItemKey].isWeapon = true;
-                    break;
-                case (int)ItemList.Sparta_Spear:
-                    iteminfo[InItemKey].name = "스파르타의 창";
-                    iteminfo[InItemKey].value = 7;
-                    iteminfo[InItemKey].price = 2100;
-                    iteminfo[InItemKey].information = "스파르타의 전사들이 사용했다는 전설의 창입니다.";
-                    iteminfo[InItemKey].isWeapon = true;
-                    break;
-                case (int)ItemList.Sparta_Helmet:
-                    iteminfo[InItemKey].name = "스파르타의 투구";
-                    iteminfo[InItemKey].value = 10;
-                    iteminfo[InItemKey].price = 2500;
-                    iteminfo[InItemKey].information = "스파르타의 전사들이 사용했다는 전설의 투구입니다.";
-                    iteminfo[InItemKey].isShile = true;
-                    break;
-            }
+            public int weapon;
+            public int shild;
         }
 
         private static void ChoiceMenu()
@@ -190,7 +104,7 @@ namespace Program1
 
             Console.WriteLine("휴식하기");
             Console.WriteLine($"{cost} G를 내면 체력을 회복할 수 있습니다. (보유 골드 : {player.coin} G).\n");
-            Console.WriteLine("1. 휴식하기\n2. 나가기");
+            Console.WriteLine("0. 나가기\n0. 휴식하기");
 
             int choice = ChoiceNumber();
 
@@ -249,6 +163,22 @@ namespace Program1
                 Thread.Sleep(500);
                 State();
             }
+        }
+
+        private static void StatUpdate()
+        {
+            Console.WriteLine("Lv. {0}", player.level);
+            Console.WriteLine("Ched ( {0} )", player.ched);
+            if (player.weapon != 0)
+                Console.WriteLine("공격력 : {0}({1})", player.damage + player.weapon, player.weapon);
+            else
+                Console.WriteLine("공격력 : {0}", player.damage);
+            if (player.shild != 0)
+                Console.WriteLine("방어력 : {0}({1})", player.defense + player.shild, player.shild);
+            else
+                Console.WriteLine("방어력 : {0}", player.defense);
+            Console.WriteLine("체력 : {0}", player.heart);
+            Console.WriteLine("Gold : {0} G", player.coin);
         }
 
         private static void Inventory()
@@ -368,7 +298,7 @@ namespace Program1
                         if (iteminfo[i].isWeapon)
                             iteminfo[i].isUse = false;
                     }
-                    player.weapon = iteminfo[ownerNumberList[choice]];
+                    player.weapon = iteminfo[ownerNumberList[choice]].value;
                 }
                 else if(iteminfo[ownerNumberList[choice]].isShile)
                 {
@@ -377,7 +307,7 @@ namespace Program1
                         if (iteminfo[i].isShile)
                             iteminfo[i].isUse = false;
                     }
-                    player.shild = iteminfo[ownerNumberList[choice]];
+                    player.shild = iteminfo[ownerNumberList[choice]].value;
                 }
 
                 iteminfo[ownerNumberList[choice]].isUse = !iteminfo[ownerNumberList[choice]].isUse;
@@ -433,24 +363,31 @@ namespace Program1
                 }
             }
 
-            Console.WriteLine("0. 나가기\n1. 아이템 구매\n");
+            Console.WriteLine("0. 나가기\n1. 아이템 구매\n2. 아이템 판매\n");
             
             int choice = ChoiceNumber();
 
-            if (choice == 0)
-                ChoiceMenu();
-            else if (choice == 1)
-                ItemStore();
-            else
+            switch(choice)
             {
-                Console.WriteLine("잘못된 입력입니다. 잠시만 기다리세요.");
+                case 0:
+                    ChoiceMenu();
+                    break;
+                case 1:
+                    ItemBuy();
+                    break;
+                case 2:
+                    ItemSale();
+                    break;
+                default:
+                    Console.WriteLine("잘못된 입력입니다. 잠시만 기다리세요.");
 
-                Thread.Sleep(500);
-                Store();
+                    Thread.Sleep(500);
+                    Store();
+                    break;
             }
         }
 
-        private static void ItemStore()
+        private static void ItemBuy()
         {
             Console.Clear();
 
@@ -491,7 +428,34 @@ namespace Program1
                 Store();
             else if (choice <= iteminfo.Length)
             {
-                ItemBuy(choice);
+                if (iteminfo[choice].isOwner)
+                {
+                    Console.WriteLine("이미 구매한 아이템입니다.");
+
+                    Thread.Sleep(500);
+                    ItemBuy();
+                }
+                else
+                {
+                    if (player.coin >= iteminfo[choice].price)
+                    {
+                        Console.WriteLine("구매를 완료했습니다.");
+
+                        player.coin -= iteminfo[choice].price;
+
+                        iteminfo[choice].isOwner = true;
+
+                        Thread.Sleep(500);
+                        ItemBuy();
+                    }
+                    else
+                    {
+                        Console.WriteLine("골드가 부족합니다.");
+
+                        Thread.Sleep(500);
+                        ItemBuy();
+                    }
+                }
             }
             else
             {
@@ -502,36 +466,141 @@ namespace Program1
             }
         }
 
-        private static void ItemBuy(int InChoiceNumber)
+        private static void ItemSale()
         {
-            if(iteminfo[InChoiceNumber].isOwner)
-            {
-                Console.WriteLine("이미 구매한 아이템입니다.");
+            Console.Clear();
 
+            Console.WriteLine("상점 - 아이템 판매");
+            Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다..\n");
+
+            Console.WriteLine("[보유 골드]");
+            Console.WriteLine("{0} G\n", player.coin);
+
+            Console.WriteLine("[아이템 목록]");
+
+            int ownerNumber = 1;
+            List<int> ownerNumberList = new List<int>();
+            ownerNumberList.Add(0);
+
+            for (int i = 1; i < iteminfo.Length; i++)
+            {
+                if (iteminfo[i].isOwner)
+                {
+                    ownerNumberList.Add(i);
+
+                    if (iteminfo[i].isShile)
+                        Console.WriteLine("- {0} {1}\t| 방어력 +{2}\t| {3}\t| {4} G", ownerNumber, iteminfo[i].name,
+                            iteminfo[i].value, iteminfo[i].information, (int)(iteminfo[i].price * 0.85f));
+                    else if (iteminfo[i].isWeapon)
+                        Console.WriteLine("- {0} {1}\t| 공격력 +{2}\t| {3}\t| {4} G", ownerNumber, iteminfo[i].name,
+                            iteminfo[i].value, iteminfo[i].information, (int)(iteminfo[i].price * 0.85f));
+
+                    ownerNumber++;
+                }
+            }
+
+            Console.WriteLine("0. 나가기\n");
+
+            int choice = ChoiceNumber();
+
+            if (choice == 0)
+                Store();
+            else if (choice <= ownerNumberList.Count)
+            {
+                if (iteminfo[ownerNumberList[choice]].isUse)
+                {
+                    if (iteminfo[ownerNumberList[choice]].isShile)
+                        player.weapon = 0;
+                    else if (iteminfo[ownerNumberList[choice]].isWeapon)
+                        player.shild = 0;
+                }
+
+                player.coin += (int)(iteminfo[ownerNumberList[choice]].price * 0.85f);
+                iteminfo[ownerNumberList[choice]].isUse = false;
+                iteminfo[ownerNumberList[choice]].isOwner = false;
+
+
+                Console.WriteLine("판매 완료. 장착 중이라면 자동으로 해제 됩니다.");
                 Thread.Sleep(500);
-                ItemStore();
+                ItemSale();
             }
             else
             {
-                if(player.coin >= iteminfo[InChoiceNumber].price)
-                {
-                    Console.WriteLine("구매를 완료했습니다.");
+                Console.WriteLine("잘못된 입력입니다. 잠시만 기다리세요.");
 
-                    player.coin -= iteminfo[InChoiceNumber].price;
-
-                    iteminfo[InChoiceNumber].isOwner = true;
-
-                    Thread.Sleep(500);
-                    ItemStore();
-                }
-                else
-                {
-                    Console.WriteLine("골드가 부족합니다.");
-
-                    Thread.Sleep(500);
-                    ItemStore();
-                }
+                Thread.Sleep(500);
+                Store();
             }
+        }
+
+        private static void ItemIndex(int InItemKey)
+        {
+            switch (InItemKey)
+            {
+                case (int)ItemList.Trainee_Armor:
+                    iteminfo[InItemKey].name = "수련자의 갑옷";
+                    iteminfo[InItemKey].value = 5;
+                    iteminfo[InItemKey].price = 1000;
+                    iteminfo[InItemKey].information = "수련에 도움을 주는 갑옷입니다.";
+                    iteminfo[InItemKey].isShile = true;
+                    break;
+                case (int)ItemList.Iron_Armor:
+                    iteminfo[InItemKey].name = "무쇠 갑옷";
+                    iteminfo[InItemKey].value = 9;
+                    iteminfo[InItemKey].price = 2000;
+                    iteminfo[InItemKey].information = "무쇠로 만들어져 튼튼한 갑옷입니다.";
+                    iteminfo[InItemKey].isShile = true;
+                    break;
+                case (int)ItemList.Sparta_Armor:
+                    iteminfo[InItemKey].name = "스파르타의 갑옷";
+                    iteminfo[InItemKey].value = 15;
+                    iteminfo[InItemKey].price = 3500;
+                    iteminfo[InItemKey].information = "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.";
+                    iteminfo[InItemKey].isShile = true;
+                    break;
+                case (int)ItemList.Old_Sword:
+                    iteminfo[InItemKey].name = "낡은 검";
+                    iteminfo[InItemKey].value = 2;
+                    iteminfo[InItemKey].price = 600;
+                    iteminfo[InItemKey].information = "쉽게 볼 수 있는 낡은 검 입니다.";
+                    iteminfo[InItemKey].isWeapon = true;
+                    break;
+                case (int)ItemList.Bronze_Ax:
+                    iteminfo[InItemKey].name = "청동 도끼";
+                    iteminfo[InItemKey].value = 5;
+                    iteminfo[InItemKey].price = 1500;
+                    iteminfo[InItemKey].information = "어디선가 사용됐던거 같은 도끼입니다.";
+                    iteminfo[InItemKey].isWeapon = true;
+                    break;
+                case (int)ItemList.Sparta_Spear:
+                    iteminfo[InItemKey].name = "스파르타의 창";
+                    iteminfo[InItemKey].value = 7;
+                    iteminfo[InItemKey].price = 2100;
+                    iteminfo[InItemKey].information = "스파르타의 전사들이 사용했다는 전설의 창입니다.";
+                    iteminfo[InItemKey].isWeapon = true;
+                    break;
+                case (int)ItemList.Sparta_Helmet:
+                    iteminfo[InItemKey].name = "스파르타의 투구";
+                    iteminfo[InItemKey].value = 10;
+                    iteminfo[InItemKey].price = 2500;
+                    iteminfo[InItemKey].information = "스파르타의 전사들이 사용했다는 전설의 투구입니다.";
+                    iteminfo[InItemKey].isShile = true;
+                    break;
+            }
+        }
+
+        struct Item(string InName, string InInformation, int InPrice, int InValue)
+        {
+            public bool isUse = false;
+            public bool isOwner = false;
+
+            public bool isWeapon = false;
+            public bool isShile = false;
+
+            public string name = InName;
+            public string information = InInformation;
+            public int price = InPrice;
+            public int value = InValue;
         }
     }
 }
