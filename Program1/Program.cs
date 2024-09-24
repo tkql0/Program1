@@ -377,11 +377,6 @@ namespace Program1
                 Store();
             }
         }
-        private static void Test()
-        {
-            Console.WriteLine("깃허브 추가 연습");
-        }
-
 
         private static void ItemStore()
         {
