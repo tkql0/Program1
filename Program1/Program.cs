@@ -147,7 +147,7 @@ namespace Program1
 
             Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.\n");
-            Console.WriteLine("1. 상태 보기\n2. 인벤토리\n3. 상점\n4. 종료하기");
+            Console.WriteLine("1. 상태 보기\n2. 인벤토리\n3. 상점\n4. 휴식하기\n5. 종료하기");
 
             switch (ChoiceNumber())
             {
@@ -161,6 +161,9 @@ namespace Program1
                     Store();
                     break;
                 case 4:
+                    Rest();
+                    break;
+                case 5:
                     isPlay = false;
                     break;
                 default:
@@ -177,6 +180,51 @@ namespace Program1
             int outNumber = int.Parse(Console.ReadLine());
 
             return outNumber;
+        }
+
+        private static void Rest()
+        {
+            Console.Clear();
+
+            int cost = 500;
+
+            Console.WriteLine("휴식하기");
+            Console.WriteLine($"{cost} G를 내면 체력을 회복할 수 있습니다. (보유 골드 : {player.coin} G).\n");
+            Console.WriteLine("1. 휴식하기\n2. 나가기");
+
+            int choice = ChoiceNumber();
+
+            if (choice == 0)
+                ChoiceMenu();
+            else if (choice == 1)
+            {
+                if (player.coin < cost)
+                {
+                    Console.WriteLine("Gold가 부족합니다.");
+
+                    Thread.Sleep(500);
+
+                    ChoiceMenu();
+                }
+                else
+                {
+                    Console.WriteLine("휴식을 완료했습니다.");
+
+                    player.heart += 100;
+                    player.coin -= cost;
+
+                    Thread.Sleep(500);
+
+                    Rest();
+                }
+            }
+            else
+            {
+                Console.WriteLine("잘못된 입력입니다. 잠시만 기다리세요.");
+
+                Thread.Sleep(500);
+                Rest();
+            }
         }
 
         private static void State()
